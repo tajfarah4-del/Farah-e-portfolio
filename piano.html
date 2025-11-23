@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Piano — Farah Tajddine</title>
+
+  <style>
+    :root{
+      --bg: #ed16fc;
+      --card: #ffffff;
+      --ink: #0f1724;
+      --muted: #61708a;
+      --accent: #6aa0d8;    /* soft blue */
+      --warm: #c99b2c;      /* gold accent */
+      --shadow: 0 8px 20px rgba(15,23,36,0.08);
+      --radius: 14px;
+      --glass: rgba(255,255,255,0.6);
+    }
+
+    /* Page reset */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, #f1f6fb 0%, var(--bg) 100%);
+      color:var(--ink);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+      padding-bottom:60px;
+    }
+
+    a{color:inherit; text-decoration:none}
+
+    /* Header / nav */
+    header{
+      position:sticky; top:0; z-index:20;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(90deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
+      border-bottom: 1px solid rgba(15,23,36,0.04);
+    }
+    .nav {
+      max-width:1100px; margin:0 auto; padding:14px 20px;
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+    }
+    .brand {
+      display:flex; align-items:center; gap:12px;
+    }
+    .logo-mark{
+      width:44px; height:44px; border-radius:10px; display:grid; place-items:center;
+      background: linear-gradient(135deg, var(--accent), #9ec9f2);
+      box-shadow: 0 6px 18px rgba(106,160,216,0.18);
+    }
+    .logo-mark svg{filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12));}
+    .brand h1{font-size:16px; margin:0}
+    nav ul{display:flex; gap:18px; align-items:center; list-style:none; margin:0; padding:0}
+    nav a.nav-link{color:var(--muted); font-weight:600; padding:8px 12px; border-radius:8px}
+    nav a.nav-link:hover{background:rgba(106,160,216,0.08); color:var(--ink) }
+
+    /* Hero banner */
+    .hero{
+      max-width:1100px; margin:28px auto; padding:36px; border-radius:16px;
+      display:grid; grid-template-columns: 1fr 400px; gap:28px; align-items:center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.75));
+      box-shadow:var(--shadow);
+      border: 1px solid rgba(15,23,36,0.03);
+    }
+    .hero-left h2{font-size:28px; margin:0 0 10px 0}
+    .hero-left p{color:var(--muted); margin:0 0 16px 0}
+    .cta-row{display:flex; gap:12px; align-items:center}
+    .btn{
+      display:inline-block; padding:10px 16px; border-radius:10px; font-weight:700;
+      background:var(--accent); color:rgb(0, 0, 0); box-shadow: 0 8px 18px rgba(106,160,216,0.18)
+    }
+    .btn.ghost{background:transparent; color:var(--ink); border:1px solid rgba(15,23,36,0.06)}
+
+    /* piano-key decorative strip */
+    .piano-strip{
+      width:100%; height:56px; border-radius:10px; overflow:hidden; margin-top:14px;
+      box-shadow: inset 0 -6px 20px rgba(0,0,0,0.03);
+      background: repeating-linear-gradient(
+        90deg,
+        #fff 0 28px,
+        #0e1720 28px 36px
+      );
+    }
+
+    /* Card sections */
+    .section { max-width:1100px; margin:22px auto; padding:0 20px; }
+    .card {
+      background:var(--card); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow);
+      border:1px solid rgba(15,23,36,0.03);
+    }
+
+    /* Gallery */
+    .gallery-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+      gap:18px; margin-top:16px;
+    }
+    .gallery-card{
+      border-radius:12px; overflow:hidden; position:relative;
+      display:flex; flex-direction:column; background:linear-gradient(180deg,#fff,#fbfdff);
+      min-height:220px;
+    }
+    .gallery-card img{
+      width:100%; height:220px; object-fit:cover; display:block;
+    }
+    .gallery-card .cap{ padding:12px; color:var(--muted); font-size:14px }
+
+    /* Songs & importance layout */
+    .two-col{ display:grid; grid-template-columns: 1fr 1fr; gap:18px; margin-top:14px }
+    .song-list ul{ list-style:none; padding-left:0; margin:0}
+    .song-list li{
+      padding:10px; border-radius:10px; display:flex; gap:12px; align-items:center;
+      background: linear-gradient(90deg, rgba(106,160,216,0.06), rgba(201,155,44,0.02));
+      margin-bottom:10px; font-weight:600; color:var(--ink);
+    }
+
+    /* small SVG icon */
+    .ico{
+      width:36px; height:36px; display:inline-grid; place-items:center;
+      background:rgba(10,20,30,0.04); border-radius:8px;
+    }
+
+    .importance{
+      padding:12px; border-radius:12px; background: linear-gradient(180deg,var(--accent), #9ec9f2);
+      color:white; box-shadow: 0 12px 30px rgba(74,144,226,0.12);
+      min-height:170px;
+    }
+
+    /* footer */
+    footer{ max-width:1100px; margin:28px auto; padding:18px 20px; color:var(--muted); text-align:center }
+
+    /* small screens */
+    @media (max-width:920px){
+      .hero{ grid-template-columns: 1fr; padding:22px }
+      .two-col{ grid-template-columns: 1fr }
+    }
+
+    /* little hover/animation */
+    .gallery-card:hover{ transform: translateY(-6px); transition: transform .25s ease; box-shadow: 0 18px 40px rgba(15,23,36,0.08) }
+    .btn:hover{ transform: translateY(-3px); transition: transform .18s ease; }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="nav">
+      <div class="brand">
+        <div class="logo-mark" aria-hidden="true">
+          <!-- small piano key SVG -->
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="3" fill="white" />
+            <rect x="4" y="7" width="3" height="8" rx="0.8" fill="#0f1724"/>
+            <rect x="9" y="7" width="3" height="8" rx="0.8" fill="#0f1724"/>
+            <rect x="14" y="7" width="3" height="8" rx="0.8" fill="#0f1724"/>
+          </svg>
+        </div>
+        <div>
+          <h1 style="font-size:15px;margin:0">Farah Tajddine</h1>
+          <div style="font-size:12px; color:var(--muted)">Piano • Design • Web</div>
+        </div>
+      </div>
+
+      <nav aria-label="Main navigation">
+        <ul>
+          <li><a class="nav-link" href="index.html">Home</a></li>
+          <li><a class="nav-link" href="about.html">About</a></li>
+          <li><a class="nav-link" href="projects.html">Projects</a></li>
+          <li><a class="nav-link" href="piano.html">Piano</a></li>
+          <li><a class="nav-link" href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  
+  <main>
+    <section class="hero" role="region" aria-labelledby="hero-title">
+      <div class="hero-left">
+        <h2 id="hero-title">My Piano — my musical journey</h2>
+        <p>Welcome to my piano page. I love playing the piano — it helps me express myself and relax. Below you'll find my favorite songs, a photo gallery, and why music matters to me.</p>
+
+        <div class="cta-row">
+          <a class="btn" href="audiopiano.jif.mp4">My Songs</a>
+          <a class="btn ghost" href="imagepiano.jpg">Gallery</a>
+        </div>
+
+        <div class="piano-strip" aria-hidden="true" title="decorative piano keys"></div>
+      </div>
+
+      <div class="hero-right card" style="display:flex; flex-direction:column; align-items:center; justify-content:center;">
+        
+        <svg width="180" height="180" viewBox="0 0 64 64" aria-hidden="true">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#6aa0d8"></stop>
+              <stop offset="1" stop-color="#9ec9f2"></stop>
+            </linearGradient>
+          </defs>
+          <circle cx="32" cy="32" r="30" fill="url(#g1)" opacity="0.95"></circle>
+          <path d="M38 18v22c0 3-2.5 5-5.5 5-2.8 0-5-2-5-4.5S30 36 33 36c0 0 6 .5 6 0V18h-1z" fill="#fff"></path>
+          <rect x="28" y="12" width="2" height="26" rx="1" fill="#fff" opacity="0.95"></rect>
+        </svg>
+
+        <div style="text-align:center; color:var; margin-top:10px;">
+          <strong>Featured song:</strong> <div style="font-weight:700; margin-top:6px">Kara Sevda — Turkish piece</div>
+        </div>
+      </div>
+    </section>
+
+    
+    <section id="Video" class="section">
+      <div class="card">
+        <h3 style="margin:0">My Piano Gallery</h3>
+        <p style="color:var(--muted); margin-top:6px">Photos from practice and performances — I love capturing moments while I play.</p>
+
+        <div class="video-grid" style="margin-top:12px">
+
+          
+          <article class="video" aria-labelledby="cap1">
+            
+         <video src="Videopiano1.mp4" type="Videopiano1/mp4">
+            <div class="cap" id="cap1">Practicing "Kara Sevda" — one of my favorite Turkish pieces.</div>
+          </article>
+
+          
+          <article class="Video" aria-labelledby="cap2">
+            <img src="imagepiano.jpg" alt="hands on piano keys (placeholder)" onerror="this.style.opacity=0.7"/>
+            <div class="cap" id="cap2">Warmups and scales — building technique.</div>
+          </article>
+
+          <article class="Video" aria-labelledby="cap3">
+
+            <video src="vodeopiano2.mp4" type="vodeopiano2/mp4">
+            <div class="cap" id="cap3">Learning new melodies and arranging pieces.</div>
+            <img src="imagepiano.jpg" alt="Me playing the piano">
+
+         </article>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="audio-section">
+  <h2>Listen to Me Playing Kara Sevda</h2>
+  <audio controls>
+    <source src="audiopiano.jif.mp4" type="audio/mp4">
+  </audio>
+</section>
+    
+    <section id="songs" class="section">
+      <div class="card">
+        <h3 style="margin:0">Songs I Enjoy Playing</h3>
+        <p style="color:var(--muted); margin-top:6px">A selection of pieces I practice and perform.</p>
+
+        
+
+        <div class="two-col">
+          <div class="song-list" aria-label="List of songs">
+            <ul>
+              <li><span class="ico" aria-hidden="true">🎵</span> <span>Kara Sevda — Traditional / Turkish</span></li>
+              <li><span class="ico" aria-hidden="true">🎵</span> <span>Beethoven — Für Elise</span></li>
+              <li><span class="ico" aria-hidden="true">🎵</span> <span>Yiruma — River Flows in You</span></li>
+              <li><span class="ico" aria-hidden="true">🎵</span> <span>Chopin — Nocturne Op.9 No.2</span></li>
+              <li><span class="ico" aria-hidden="true">🎵</span> <span>Yann Tiersen — Comptine d’un autre été</span></li>
+              <li><span class="ico" aria-hidden="true">🎵</span> <span>My own simple pop melody</span></li>
+            </ul>
+          </div>
+
+          <aside class="importance" aria-label="Why piano matters">
+            <h4 style="margin-top:0;margin-bottom:8px">Why the piano is important to me?</h4>
+            <p style="margin:0; color:rgba(246, 38, 107, 0.95); font-weight:500">
+              Playing the piano helps me relax and share my feelings when I can't find the right words to say how I feel. It is my own quiet place where I can let go of stress and find peace. The sound of the music helps me show my emotions in a way that is just for me. This practice also helps me learn important skills I use every day. It teaches me to be patient when something is hard, helps me focus better, and makes me more creative. These skills help me a lot with my school assignments and my design work.
+Learning different songs, like "Kara Sevda," also lets me travel the world through music. It helps me understand new cultures and the stories they tell. This makes me feel more connected to people everywhere. Every time I learn a new piece of music, I feel a big sense of pride. This feeling of doing something well makes me more confident in myself and keeps me growing as a person. The piano is more than an instrument; it is a friend that helps me be my best self.
+
+
+            </p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    
+    <section class="section">
+      <div class="card" style="display:flex; gap:16px; align-items:center;">
+        <div style="flex:1">
+          <h4 style="margin:0 0 8px 0">Practice tips</h4>
+         <p style="color:var(--muted); margin:0">Short, focused practice sessions (15–30 minutes) work better than long, unfocused ones. Use a metronome, slow sections down, and celebrate small improvements.</p>
+        </div>
+        <div style="width:120px; text-align:center;">
+          <svg width="88" height="88" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="#fff" d="M0 0h24v24H0z"/>
+            <path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z" fill="url(#g)"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <section class="project-grid">
+  <div class="project-card">
+    <h3>My Piano Journey</h3>
+    <p>I love learning and playing songs like Kara Sevda.</p>
+  </div>
+</section>
+</body>
+</html>
+
+
+
+  <footer>
+    <div style="max-width:1100px; margin:0 auto; padding:8px 20px; color:var(--muted)">
+      © Farah Tajddine — Piano & Web Portfolio • <a href="mailto:tajfarah4@gmail.com">tajfarah4@gmail.com</a>
+    </div>
+  </footer>
+
+</body>
+</html>
+
+
